@@ -1,7 +1,7 @@
 package com.example.cliniko.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Paciente {
@@ -12,7 +12,9 @@ public class Paciente {
     private String nombre;
     private String apellido;
     private String email;
-    private LocalDate fechaNacimiento;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private List<Cita> citas;
 
     // Getters y Setters
     public Long getId() { return id; }
@@ -27,6 +29,6 @@ public class Paciente {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
-    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+    public List<Cita> getCitas() { return citas; }
+    public void setCitas(List<Cita> citas) { this.citas = citas; }
 }
