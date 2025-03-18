@@ -3,6 +3,8 @@ package com.example.cliniko.model;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Paciente {
     @Id
@@ -12,7 +14,8 @@ public class Paciente {
     private String nombre;
     private String apellido;
     private String email;
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
     private List<Cita> citas;
 

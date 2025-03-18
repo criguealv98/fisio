@@ -1,0 +1,51 @@
+package com.example.cliniko.config;
+
+import com.example.cliniko.service.UsuarioService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfig {
+
+    private final UsuarioService usuarioService;
+
+    public SecurityConfig(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();  // Codificación de contraseñas
+    }
+
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//        AuthenticationManagerBuilder authenticationManagerBuilder = 
+//            http.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.userDetailsService(usuarioService)
+//                                    .passwordEncoder(passwordEncoder());
+//        return authenticationManagerBuilder.build();
+//    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests()
+                .requestMatchers("/h2-console/**").permitAll()  // Permitir acceso sin autenticación a la consola H2
+                .anyRequest().permitAll()  // Permitir el acceso a todas las rutas sin autenticación
+            .and()
+            .csrf().disable()  // Desactivar CSRF
+            .formLogin().disable()  // Desactivar el formulario de login
+            .httpBasic().disable()  // Desactivar la autenticación básica HTTP
+            .headers().frameOptions().sameOrigin();  // Permitir la consola H2 desde el mismo origen
+
+        return http.build();
+    }
+}

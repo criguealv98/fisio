@@ -1,0 +1,27 @@
+package com.example.cliniko.model;
+
+import jakarta.persistence.*;
+import java.util.List;
+
+@Entity
+public class Clinica {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nombre;
+
+    @OneToMany(mappedBy = "clinica", cascade = CascadeType.ALL)
+    private List<Fisio> fisios;
+
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public List<Fisio> getFisios() { return fisios; }
+    public void setFisios(List<Fisio> fisios) { this.fisios = fisios; }
+}

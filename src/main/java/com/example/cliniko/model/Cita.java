@@ -1,10 +1,12 @@
 package com.example.cliniko.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 public class Cita {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
