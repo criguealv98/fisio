@@ -6,9 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -36,20 +39,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests()
-                .requestMatchers("/login", "/register", "/menu-admin").permitAll()  // Permitir acceso sin autenticación a /menu-admin
-                .anyRequest().authenticated()  // El resto requiere autenticación
-            .and()
-            .formLogin()  // Formulario de login
-                .loginPage("/login")  // Página personalizada de login
-                .permitAll()
-            .and()
-            .logout()  // Configuración de logout
-                .permitAll()
-            .and()
-            .csrf().disable();  // Desactiva CSRF si no lo necesitas
+    	  http
+          .authorizeHttpRequests(auth -> auth
+              .requestMatchers("/login", "/register", "/menu-admin", "/h2-console/**").permitAll()
+              .anyRequest().authenticated()
+          )
+          .formLogin(form -> form
+              .loginPage("/login")
+              .defaultSuccessUrl("/menu", true)  // Redirigir tras login exitoso
+              .permitAll()
+          )
+          .logout(logout -> logout
+              .logoutUrl("/logout")
+              .logoutSuccessUrl("/login") // Redirige a login tras cerrar sesión
+              .permitAll()
+          )
+          .csrf(csrf -> csrf
+              .ignoringRequestMatchers("/h2-console/**") // Deshabilita CSRF solo para H2 Console
+              .ignoringRequestMatchers("/login") // Si sigues con problemas, prueba esto
+          )
+          .headers(headers -> headers.frameOptions().disable());  // Permite iframes para H2 Console
 
-        return http.build();
+      return http.build();
     }
+    
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +14,8 @@ public class UsuarioService implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -32,6 +35,7 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.findByUsername(username);
     }
     public Usuario save(Usuario usuario) {
+    	
         return usuarioRepository.save(usuario);
     }
 }

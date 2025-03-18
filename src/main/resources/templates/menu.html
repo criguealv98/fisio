@@ -4,44 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Principal</title>
-<link href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/cosmo/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f8ff; /* Azul claro */
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 40px;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 20px;
+        }
+        .btn {
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            color: #004085;
+        }
+        hr {
+            border-top: 2px solid #007bff;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
-<h1 id="mensaje" class="my-4" th:text="${mensaje}"></h1>
+        <div class="card">
+            <h1 id="mensaje" th:text="${mensaje}"></h1>
 
-        <!-- Botones de navegación -->
-        <button class="btn btn-primary" id="btnVerCitas" style="display:none;" onclick="verCitas()">Ver Citas</button>
-        <button class="btn btn-secondary" id="btnVerPacientes" style="display:none;" onclick="verPacientes()">Ver Pacientes</button>
-        <button class="btn btn-success" id="btnCrearCita" style="display:none;" onclick="crearCitaForm()">Crear Cita</button>
+            <div class="d-grid gap-2 my-3">
+                <button class="btn btn-primary" id="btnVerCitas" style="display:none;" onclick="verCitas()">📅 Ver Citas</button>
+                <button class="btn btn-secondary" id="btnVerPacientes" style="display:none;" onclick="verPacientes()">👥 Ver Pacientes</button>
+                <button class="btn btn-success" id="btnCrearCita" style="display:none;" onclick="crearCitaForm()">➕ Crear Cita</button>
+            </div>
 
-        <hr>
+            <hr>
 
-        <!-- Formulario de crear cita -->
-        <div id="crearCitaForm" style="display:none;">
-            <h2>Crear Cita</h2>
-            <form id="formCrearCita">
-                <label for="paciente">Paciente:</label>
-                <select id="pacienteSelect" class="form-control" required></select><br>
-                
-                <label for="fechaHora">Fecha y Hora (de lunes a viernes, 17:00-20:00):</label>
-                <input type="datetime-local" id="fechaHora" class="form-control" required><br>
+            <!-- Formulario de crear cita -->
+            <div id="crearCitaForm" style="display:none;">
+                <h2 class="text-primary">Crear Cita</h2>
+                <form id="formCrearCita">
+                    <label for="paciente">Paciente:</label>
+                    <select id="pacienteSelect" class="form-control" required></select><br>
 
-                <button type="submit" class="btn btn-success">Guardar Cita</button>
-            </form>
-        </div>
+                    <label for="fechaHora">Fecha y Hora:</label>
+                    <input type="datetime-local" id="fechaHora" class="form-control" required><br>
 
-        <!-- Lista de citas -->
-        <div id="citasLista" style="display:none;">
-            <h2>Citas</h2>
-            <ul id="citasUl"></ul>
-        </div>
+                    <button type="submit" class="btn btn-success w-100">Guardar Cita</button>
+                </form>
+            </div>
 
-        <!-- Lista de pacientes -->
-        <div id="pacientesLista" style="display:none;">
-            <h2>Pacientes</h2>
-            <ul id="pacientesUl"></ul>
+            <!-- Lista de citas -->
+            <div id="citasLista" style="display:none;">
+                <h2 class="text-primary">Citas</h2>
+                <ul id="citasUl" class="list-group"></ul>
+            </div>
+
+            <!-- Lista de pacientes -->
+            <div id="pacientesLista" style="display:none;">
+                <h2 class="text-primary">Pacientes</h2>
+                <ul id="pacientesUl" class="list-group"></ul>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="/login" class="btn btn-danger">Cerrar sesión</a>
+            </div>
         </div>
     </div>
 
@@ -49,7 +99,6 @@
         const citaUrl = '/citas';
         const pacienteUrl = '/pacientes';
 
-        // Función para ver citas
         function verCitas() {
             fetch(citaUrl)
                 .then(response => response.json())
@@ -61,13 +110,13 @@
                     citasUl.innerHTML = '';
                     citas.forEach(cita => {
                         const li = document.createElement('li');
-                        li.textContent = `Cita con paciente ${cita.paciente.nombre} el ${cita.fechaHora}`;
+                        li.classList.add('list-group-item');
+                        li.textContent = `📅 ${cita.paciente.nombre} - ${cita.fechaHora}`;
                         citasUl.appendChild(li);
                     });
                 });
         }
 
-        // Función para ver pacientes
         function verPacientes() {
             fetch(pacienteUrl)
                 .then(response => response.json())
@@ -79,13 +128,13 @@
                     pacientesUl.innerHTML = '';
                     pacientes.forEach(paciente => {
                         const li = document.createElement('li');
-                        li.textContent = `${paciente.nombre} ${paciente.apellido}`;
+                        li.classList.add('list-group-item');
+                        li.textContent = `👤 ${paciente.nombre} ${paciente.apellido}`;
                         pacientesUl.appendChild(li);
                     });
                 });
         }
 
-        // Función para crear la cita
         function crearCitaForm() {
             document.getElementById('pacienteSelect').innerHTML = '';
             fetch(pacienteUrl)
@@ -104,62 +153,40 @@
             document.getElementById('pacientesLista').style.display = 'none';
         }
 
-        // Manejo del formulario de creación de cita
         document.getElementById('formCrearCita').addEventListener('submit', function(event) {
             event.preventDefault();
 
             const pacienteId = document.getElementById('pacienteSelect').value;
             const fechaHora = document.getElementById('fechaHora').value;
 
-            const cita = {
-                fechaHora: fechaHora,
-            };
+            const cita = { fechaHora: fechaHora };
 
             fetch(`/citas/${pacienteId}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(cita)
             })
             .then(response => {
-                if (!response.ok) {
-                    // Si la respuesta no es ok, leer el mensaje de error
-                    return response.text().then(text => {
-                        throw new Error(text);  // Lanzar el error con el mensaje del backend
-                    });
-                }
-                return response.json();  // Si la respuesta es ok, leer como JSON
+                if (!response.ok) return response.text().then(text => { throw new Error(text); });
+                return response.json();
             })
-            .then(data => {
-                alert('Cita creada con éxito');
-                verCitas();  // Refrescar lista de citas
+            .then(() => {
+                alert('✅ Cita creada con éxito');
+                verCitas();
             })
-            .catch(error => {
-                alert('Error al crear la cita: ' + error.message);  // Mostrar el mensaje de error
-            });
+            .catch(error => alert('❌ Error al crear la cita: ' + error.message));
         });
 
-        // Función para controlar la visibilidad de los botones según el usuario
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/usuario/estado')  // Suponiendo que tienes una API que devuelve el estado del usuario
+            fetch('/usuario/estado')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.canCreateCita) {
-                        document.getElementById('btnCrearCita').style.display = 'inline-block';
-                    }
-                    if (data.canViewCitas) {
-                        document.getElementById('btnVerCitas').style.display = 'inline-block';
-                    }
-                    if (data.canViewPacientes) {
-                        document.getElementById('btnVerPacientes').style.display = 'inline-block';
-                    }
+                    if (data.canCreateCita) document.getElementById('btnCrearCita').style.display = 'inline-block';
+                    if (data.canViewCitas) document.getElementById('btnVerCitas').style.display = 'inline-block';
+                    if (data.canViewPacientes) document.getElementById('btnVerPacientes').style.display = 'inline-block';
                 })
-                .catch(error => {
-                    console.error('Error al obtener el estado del usuario:', error);
-                });
+                .catch(error => console.error('Error:', error));
         });
     </script>
-    <a href="/logout">Cerrar sesión</a>
 </body>
 </html>
