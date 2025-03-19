@@ -23,6 +23,7 @@
         .btn {
             border-radius: 8px;
             transition: all 0.3s ease;
+            margin-bottom: 10px;
         }
         h1 {
             text-align: center;
@@ -34,10 +35,6 @@
         .form-control {
             margin-bottom: 10px;
         }
-        .optional {
-            font-size: 0.9em;
-            color: #6c757d;
-        }
     </style>
 </head>
 <body>
@@ -45,45 +42,11 @@
     <div class="container">
         <div class="card">
             <h1>Menú de Administración</h1>
-
-            <p class="text-success" th:text="${mensaje}"></p>
-            
             <hr>
 
-            <!-- Formulario para crear usuario -->
-            <h2 class="text-primary">Crear Usuario</h2>
-            <form action="/crear-usuario" method="post">
-                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-                
-                <label for="idUsuario" class="optional">ID Usuario (Opcional)</label>
-                <input type="number" id="idUsuario" name="idUsuario" class="form-control" placeholder="ID Usuario">
-
-                <label for="idFisio" class="optional">ID Fisio (Opcional)</label>
-                <input type="number" id="idFisio" name="idFisio" class="form-control" placeholder="ID Fisio">
-                
-                <button type="submit" class="btn btn-primary w-100">Crear Usuario</button>
-            </form>
-
-            <hr>
-
-            <!-- Formulario para crear fisio -->
-            <h2 class="text-primary">Crear Fisio</h2>
-            <form action="/crear-fisio" method="post">
-                <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre" required>
-                <input type="text" id="clinica" name="clinica" class="form-control" placeholder="Clínica" required>
-                <button type="submit" class="btn btn-success w-100">Crear Fisio</button>
-            </form>
-
-            <hr>
-
-            <!-- Formulario para crear paciente -->
-            <h2 class="text-primary">Crear Paciente</h2>
-            <form action="/crear-paciente" method="post">
-                <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre" required>
-                <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Apellido" required>
-                <button type="submit" class="btn btn-secondary w-100">Crear Paciente</button>
-            </form>
+            <button class="btn btn-primary w-100" onclick="location.href='/crear-usuario-form'">Crear Usuario</button>
+            <button class="btn btn-success w-100" onclick="location.href='/crear-paciente-form'">Crear Paciente</button>
+            <button class="btn btn-secondary w-100" onclick="location.href='/crear-fisio-form'">Crear Fisio</button>
         </div>
     </div>
 

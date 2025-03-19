@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f8ff; /* Azul claro */
+            background-color: #f0f8ff;
             font-family: 'Poppins', sans-serif;
         }
         .container {
@@ -50,57 +50,41 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="card">
             <h1 id="mensaje" th:text="${mensaje}"></h1>
-
             <div class="d-grid gap-2 my-3">
-                <button class="btn btn-primary" id="btnVerCitas" style="display:none;" onclick="verCitas()">📅 Ver Citas</button>
-                <button class="btn btn-secondary" id="btnVerPacientes" style="display:none;" onclick="verPacientes()">👥 Ver Pacientes</button>
-                <button class="btn btn-success" id="btnCrearCita" style="display:none;" onclick="crearCitaForm()">➕ Crear Cita</button>
+                <button class="btn btn-primary" id="btnVerCitas" th:if="${canViewCitas}" onclick="verCitas()">📅 Ver Citas</button>
+                <button class="btn btn-secondary" id="btnVerPacientes" th:if="${canViewPacientes}" onclick="verPacientes()">👥 Ver Pacientes</button>
+                <button class="btn btn-success" id="btnCrearCita" th:if="${canCreateCita}" onclick="crearCitaForm()">➕ Crear Cita</button>
             </div>
-
             <hr>
-
-            <!-- Formulario de crear cita -->
             <div id="crearCitaForm" style="display:none;">
                 <h2 class="text-primary">Crear Cita</h2>
                 <form id="formCrearCita">
                     <label for="paciente">Paciente:</label>
                     <select id="pacienteSelect" class="form-control" required></select><br>
-
                     <label for="fechaHora">Fecha y Hora:</label>
                     <input type="datetime-local" id="fechaHora" class="form-control" required><br>
-
                     <button type="submit" class="btn btn-success w-100">Guardar Cita</button>
                 </form>
             </div>
-
-            <!-- Lista de citas -->
             <div id="citasLista" style="display:none;">
                 <h2 class="text-primary">Citas</h2>
                 <ul id="citasUl" class="list-group"></ul>
             </div>
-
-            <!-- Lista de pacientes -->
             <div id="pacientesLista" style="display:none;">
                 <h2 class="text-primary">Pacientes</h2>
                 <ul id="pacientesUl" class="list-group"></ul>
             </div>
-
             <div class="text-center mt-3">
                 <a href="/login" class="btn btn-danger">Cerrar sesión</a>
             </div>
         </div>
     </div>
-
     <script>
-        const citaUrl = '/citas';
-        const pacienteUrl = '/pacientes';
-
         function verCitas() {
-            fetch(citaUrl)
+            fetch('/citas')
                 .then(response => response.json())
                 .then(citas => {
                     document.getElementById('citasLista').style.display = 'block';
@@ -118,7 +102,7 @@
         }
 
         function verPacientes() {
-            fetch(pacienteUrl)
+            fetch('/pacientes')
                 .then(response => response.json())
                 .then(pacientes => {
                     document.getElementById('pacientesLista').style.display = 'block';
@@ -137,7 +121,7 @@
 
         function crearCitaForm() {
             document.getElementById('pacienteSelect').innerHTML = '';
-            fetch(pacienteUrl)
+            fetch('/pacientes')
                 .then(response => response.json())
                 .then(pacientes => {
                     pacientes.forEach(paciente => {
@@ -147,46 +131,10 @@
                         document.getElementById('pacienteSelect').appendChild(option);
                     });
                 });
-
             document.getElementById('crearCitaForm').style.display = 'block';
             document.getElementById('citasLista').style.display = 'none';
             document.getElementById('pacientesLista').style.display = 'none';
         }
-
-        document.getElementById('formCrearCita').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const pacienteId = document.getElementById('pacienteSelect').value;
-            const fechaHora = document.getElementById('fechaHora').value;
-
-            const cita = { fechaHora: fechaHora };
-
-            fetch(`/citas/${pacienteId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(cita)
-            })
-            .then(response => {
-                if (!response.ok) return response.text().then(text => { throw new Error(text); });
-                return response.json();
-            })
-            .then(() => {
-                alert('✅ Cita creada con éxito');
-                verCitas();
-            })
-            .catch(error => alert('❌ Error al crear la cita: ' + error.message));
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/usuario/estado')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.canCreateCita) document.getElementById('btnCrearCita').style.display = 'inline-block';
-                    if (data.canViewCitas) document.getElementById('btnVerCitas').style.display = 'inline-block';
-                    if (data.canViewPacientes) document.getElementById('btnVerPacientes').style.display = 'inline-block';
-                })
-                .catch(error => console.error('Error:', error));
-        });
     </script>
 </body>
 </html>

@@ -18,49 +18,47 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(UsuarioService usuarioService) {
+    public SecurityConfig(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // Codificación de contraseñas
+        this.passwordEncoder = passwordEncoder;  // Inyección a través del constructor
     }
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
-            http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(usuarioService)
-                                    .passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder.build();
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+            authenticationManagerBuilder.userDetailsService(usuarioService)
+                                        .passwordEncoder(passwordEncoder);
+            return authenticationManagerBuilder.build();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	  http
+        http
           .authorizeHttpRequests(auth -> auth
-              .requestMatchers("/login", "/register", "/menu-admin", "/h2-console/**").permitAll()
-              .anyRequest().authenticated()
+              .requestMatchers("/login", "/register", "/menu-admin", "/h2-console/**", "/crear-usuario").permitAll()  // Permite acceso a /crear-usuario
+              .anyRequest().authenticated()  // Otras rutas requieren autenticación
           )
           .formLogin(form -> form
               .loginPage("/login")
-              .defaultSuccessUrl("/menu", true)  // Redirigir tras login exitoso
+              .defaultSuccessUrl("/menu", true)  // Redirige tras login exitoso
               .permitAll()
           )
           .logout(logout -> logout
               .logoutUrl("/logout")
-              .logoutSuccessUrl("/login") // Redirige a login tras cerrar sesión
+              .logoutSuccessUrl("/login")  // Redirige a login tras cerrar sesión
               .permitAll()
           )
           .csrf(csrf -> csrf
-              .ignoringRequestMatchers("/h2-console/**") // Deshabilita CSRF solo para H2 Console
-              .ignoringRequestMatchers("/login") // Si sigues con problemas, prueba esto
-          )
+              .ignoringRequestMatchers("/h2-console/**")  // Deshabilita CSRF solo para H2 Console
+              .ignoringRequestMatchers("/login")  // Si sigues con problemas, prueba esto
+              .ignoringRequestMatchers("/crear-usuario")
+        		  )
           .headers(headers -> headers.frameOptions().disable());  // Permite iframes para H2 Console
 
-      return http.build();
+        return http.build();
     }
-    
 }
+

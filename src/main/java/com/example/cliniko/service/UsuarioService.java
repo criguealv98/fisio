@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,12 @@ public class UsuarioService implements UserDetailsService {
     public Usuario findByUsername(String username) {
         return usuarioRepository.findByUsername(username);
     }
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Ahora Spring lo encuentra en PasswordEncoderConfig
+    
     public Usuario save(Usuario usuario) {
-    	
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
         return usuarioRepository.save(usuario);
     }
 }

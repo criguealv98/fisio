@@ -1,4 +1,5 @@
 package com.example.cliniko.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,43 +16,36 @@ public class MenuController {
 
     @Autowired
     private UsuarioService usuarioService;
-    
+
     @Autowired
-	private FisioService fisioService;  
+    private FisioService fisioService;
 
     @GetMapping("/menu")
     public String getMenu(Authentication authentication, Model model) {
         if (authentication == null || authentication.getName() == null) {
-            // Si no hay usuario autenticado, mostrar mensaje predeterminado para la gestión de citas
             model.addAttribute("mensaje", "Bienvenido a la gestión de citas");
-        } else {
-            // Si el usuario está autenticado
-            String username = authentication.getName();
-            Usuario usuario = usuarioService.findByUsername(username);
+            return "menu"; 
+        }
 
-            if (usuario != null) {
-                boolean isFisio = usuario.getFisioId() != null;
-                boolean isPaciente = usuario.getPacienteId() != null;
+        String username = authentication.getName();
+        Usuario usuario = usuarioService.findByUsername(username);
+
+        if (usuario != null) {
+            boolean isFisio = usuario.getFisioId() != null;
+            boolean isPaciente = usuario.getPacienteId() != null;
+
+            model.addAttribute("canCreateCita", isPaciente); // Los pacientes pueden crear citas
+            model.addAttribute("canViewCitas", true); // Todos pueden ver citas, pero se controla en la vista qué citas
+            model.addAttribute("canViewPacientes", isFisio); // Solo los fisios pueden ver pacientes
+
+            if (isFisio) {
                 Fisio fisio = fisioService.findById(usuario.getFisioId());
-                
-
-                model.addAttribute("canCreateCita", isPaciente); // Paciente puede crear citas
-                model.addAttribute("canViewCitas", isFisio); // Fisio puede ver citas
-                model.addAttribute("canViewPacientes", isFisio); // Fisio puede ver pacientes
-
-                // Si el usuario es fisio, muestra el nombre de la clínica
-                if (isFisio) {
-                    // Aquí asumo que tienes un método para obtener la clínica del fisio.
-                    // Añade la lógica para obtener la clínica del fisio, si es necesario
-                    model.addAttribute("mensaje", "Bienvenido a la clínica " + fisio.getClinica().getNombre());
-                } else if (isPaciente) {
-                    // Si es paciente
-                    model.addAttribute("mensaje", "Bienvenido a la gestión de citas");
-                }
+                model.addAttribute("mensaje", "Bienvenido a la clínica " + fisio.getClinica().getNombre());
+            } else {
+                model.addAttribute("mensaje", "Bienvenido a la gestión de citas");
             }
         }
 
-        return "menu"; // Nombre de tu vista de menú
+        return "menu";
     }
-
 }

@@ -5,13 +5,17 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cliniko.model.Fisio;
 import com.example.cliniko.model.Usuario;
 import com.example.cliniko.service.FisioService;
 import com.example.cliniko.service.UsuarioService;
+
 
 @RestController
 public class UsuarioController {
@@ -24,6 +28,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
         this.fisioService = fisioService;
     }
+    
     @GetMapping("/usuario/estado")
     public Map<String, Object> obtenerEstadoUsuario(Authentication authentication) {
         Usuario usuario = usuarioService.findByUsername(authentication.getName());

@@ -1,5 +1,7 @@
 package com.example.cliniko.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,8 @@ public class FisioService {
     
     public Fisio save(Fisio fisio) {
         return fisioRepository.save(fisio);
+    }
+    public List<Fisio> findAll() {
+        return fisioRepository.findAll();
     }
 }

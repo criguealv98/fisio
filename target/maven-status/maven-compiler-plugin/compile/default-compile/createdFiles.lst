@@ -1,6 +1,8 @@
 com\example\cliniko\model\Cita.class
 com\example\cliniko\controller\MenuController.class
 com\example\cliniko\controller\PacienteController.class
+com\example\cliniko\controller\PagoController.class
+com\example\cliniko\service\PagoService.class
 com\example\cliniko\controller\MenuAdminController.class
 com\example\cliniko\repository\CitaRepository.class
 com\example\cliniko\service\FisioService.class
@@ -9,7 +11,9 @@ com\example\cliniko\controller\AuthController.class
 com\example\cliniko\controller\UsuarioController.class
 com\example\cliniko\controller\CitaController.class
 com\example\cliniko\repository\FisioRepository.class
+com\example\cliniko\repository\PagoRepository.class
 com\example\cliniko\ClinikoApplication.class
+com\example\cliniko\config\PasswordEncoderConfig.class
 com\example\cliniko\service\PacienteService.class
 com\example\cliniko\model\Fisio.class
 com\example\cliniko\controller\ClinicaController.class
@@ -18,6 +22,7 @@ com\example\cliniko\controller\HomeController.class
 com\example\cliniko\config\SecurityConfig.class
 com\example\cliniko\controller\FisioController.class
 com\example\cliniko\model\Usuario.class
+com\example\cliniko\model\Pago.class
 com\example\cliniko\service\UsuarioService.class
 com\example\cliniko\repository\UsuarioRepository.class
 com\example\cliniko\model\Clinica.class
