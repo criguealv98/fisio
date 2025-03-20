@@ -2,14 +2,22 @@ package com.example.cliniko.controller;
 
 import com.example.cliniko.model.Cita;
 import com.example.cliniko.model.Paciente;
+import com.example.cliniko.model.Usuario;
 import com.example.cliniko.repository.CitaRepository;
 import com.example.cliniko.repository.PacienteRepository;
+import com.example.cliniko.service.CitaService;
+import com.example.cliniko.service.PacienteService;
+import com.example.cliniko.service.UsuarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -65,5 +73,21 @@ public class CitaController {
         // Verificar si la hora está entre las 17:00 y las 20:00
         int hora = fechaHora.getHour();
         return hora >= 17 && hora < 20;
+    }
+    @Autowired
+    private UsuarioService usuarioService;
+    
+    @Autowired
+    private PacienteService pacienteService;
+    
+    @Autowired
+    private CitaService citaService;
+
+    @GetMapping("/paciente")
+    public List<Cita> getCitasPorPaciente(Authentication authentication, Model model) {
+    	String username = authentication.getName();
+        Usuario usuario = usuarioService.findByUsername(username);
+        Paciente p = pacienteService.findById(usuario.getPacienteId());
+    	return citaService.citasPorPaciente(p);
     }
 }

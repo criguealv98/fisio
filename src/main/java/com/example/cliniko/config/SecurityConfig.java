@@ -38,7 +38,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
           .authorizeHttpRequests(auth -> auth
-              .requestMatchers("/login", "/register", "/menu-admin", "/h2-console/**", "/crear-usuario").permitAll()  // Permite acceso a /crear-usuario
+              .requestMatchers("/login", "/register", "/menu-admin", "/h2-console/**", "/crear-usuario", "/crear-paciente", "/crear-fisio").permitAll()  // Permite acceso a /crear-usuario
               .anyRequest().authenticated()  // Otras rutas requieren autenticación
           )
           .formLogin(form -> form
@@ -55,6 +55,9 @@ public class SecurityConfig {
               .ignoringRequestMatchers("/h2-console/**")  // Deshabilita CSRF solo para H2 Console
               .ignoringRequestMatchers("/login")  // Si sigues con problemas, prueba esto
               .ignoringRequestMatchers("/crear-usuario")
+              .ignoringRequestMatchers("/crear-fisio")
+              .ignoringRequestMatchers("/crear-paciente")
+
         		  )
           .headers(headers -> headers.frameOptions().disable());  // Permite iframes para H2 Console
 

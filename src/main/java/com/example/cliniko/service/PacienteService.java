@@ -28,4 +28,5 @@ public class PacienteService {
     public List<Paciente> findAll() {
         return pacienteRepository.findAll();
     }
+    
 }

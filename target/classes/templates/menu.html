@@ -84,7 +84,7 @@
     </div>
     <script>
         function verCitas() {
-            fetch('/citas')
+            fetch('/citas/paciente')
                 .then(response => response.json())
                 .then(citas => {
                     document.getElementById('citasLista').style.display = 'block';
@@ -121,7 +121,7 @@
 
         function crearCitaForm() {
             document.getElementById('pacienteSelect').innerHTML = '';
-            fetch('/pacientes')
+            fetch('/pacientes/id')
                 .then(response => response.json())
                 .then(pacientes => {
                     pacientes.forEach(paciente => {

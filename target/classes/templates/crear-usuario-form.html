@@ -38,8 +38,40 @@
             <form action="/crear-usuario" method="post">
                 <input type="text" name="username" class="form-control" placeholder="Username" required>
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
+				<select id ="fisioId" name="fisioId" class="form-control" >
+					<option value="">Seleccione un fisio</option>
+				</select>
+				<select id ="pacienteId" name="pacienteId" class="form-control" >
+					<option value="">Seleccione un paciente</option>
+				</select>
                 <button type="submit" class="btn btn-primary w-100 mt-3">Crear Usuario</button>
             </form>
+			<script>
+				fetch('/fisios')
+				.then(response => response.json())
+				.then(data => {
+				    let select = document.getElementById("fisioId");
+				    data.forEach(fisio => {
+				        let option = document.createElement("option");
+				        option.value = fisio.id; // Corrección aquí
+				        option.textContent = fisio.nombre;
+				        select.appendChild(option);
+				    });
+				}).catch(error => console.error("Error cargando fisios...", error));
+				</script>
+				<script>
+								fetch('/pacientes')
+								.then(response => response.json())
+								.then(data => {
+								    let select = document.getElementById("pacienteId");
+								    data.forEach(paciente => {
+								        let option = document.createElement("option");
+								        option.value = paciente.id; // Corrección aquí
+								        option.textContent = paciente.nombre;
+								        select.appendChild(option);
+								    });
+								}).catch(error => console.error("Error cargando pacientes...", error));
+								</script>
         </div>
     </div>
 

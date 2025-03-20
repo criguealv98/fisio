@@ -1,9 +1,11 @@
 package com.example.cliniko.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cliniko.model.Fisio;
+import com.example.cliniko.model.Paciente;
 import com.example.cliniko.model.Usuario;
 import com.example.cliniko.service.FisioService;
 import com.example.cliniko.service.UsuarioService;
@@ -69,5 +72,7 @@ public class UsuarioController {
 
         return estado;
     }
+    
+    
 
 }

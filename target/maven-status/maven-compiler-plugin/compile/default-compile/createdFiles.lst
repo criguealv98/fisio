@@ -9,6 +9,7 @@ com\example\cliniko\service\FisioService.class
 com\example\cliniko\model\Paciente.class
 com\example\cliniko\controller\AuthController.class
 com\example\cliniko\controller\UsuarioController.class
+com\example\cliniko\service\CitaService.class
 com\example\cliniko\controller\CitaController.class
 com\example\cliniko\repository\FisioRepository.class
 com\example\cliniko\repository\PagoRepository.class

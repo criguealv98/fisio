@@ -58,16 +58,20 @@ public class MenuAdminController {
     }
 
     @PostMapping("/crear-fisio")
-    public String crearFisio(Fisio fisio, Model model) {
+    public String crearFisio(@ModelAttribute Fisio fisio, Model model) {
         fisioService.save(fisio);  // Guarda el fisio
         model.addAttribute("mensaje", "Fisio creado con éxito");
+        model.addAttribute("fisio", fisio);
+
         return "crear-fisio";  // Redirige al menú de administración
     }
 
     @PostMapping("/crear-paciente")
-    public String crearPaciente(Paciente paciente, Model model) {
+    public String crearPaciente(@ModelAttribute Paciente paciente, Model model) {
         pacienteService.save(paciente);  // Guarda el paciente
         model.addAttribute("mensaje", "Paciente creado con éxito");
+        model.addAttribute("paciente", paciente);
+
         return "crear-paciente";  // Redirige al menú de administración
     }
  // Ruta para la página de creación de fisio

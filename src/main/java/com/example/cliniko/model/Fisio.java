@@ -1,5 +1,7 @@
 package com.example.cliniko.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +17,7 @@ public class Fisio {
 
     @ManyToOne
     @JoinColumn(name = "clinica_id")
+    @JsonIgnore
     private Clinica clinica;
 
     // Getters y Setters

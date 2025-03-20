@@ -41,19 +41,19 @@
             <h2>Registro Exitoso</h2>
 
             <!-- Si el usuario fue registrado correctamente, mostrar los datos -->
-            <div class="alert alert-success" th:if="${usuario != null}">
-                <h4 class="alert-heading">¡Usuario registrado exitosamente!</h4>
-                <p>Los detalles del usuario registrado son los siguientes:</p>
+            <div class="alert alert-success" th:if="${fisio != null}">
+                <h4 class="alert-heading">¡Fisio registrado exitosamente!</h4>
+                <p>Los detalles del fisio registrado son los siguientes:</p>
                 <ul>
-                    <li><strong>Nombre:</strong> <span th:text="${usuario.username}"></span></li>
+                    <li><strong>Nombre:</strong> <span th:text="${fisio.nombre}"></span></li>
                 </ul>
                 <a href="/menu" class="btn btn-primary w-100 mt-3">Volver al menú</a>
             </div>
 
             <!-- Si hubo algún error en el registro, mostrar un mensaje de error -->
-            <div class="alert alert-danger" th:if="${usuario == null}">
-                <h4 class="alert-heading">Error al registrar el usuario</h4>
-                <p>Hubo un problema al intentar registrar al usuario. Por favor, inténtalo de nuevo.</p>
+            <div class="alert alert-danger" th:if="${fisio == null}">
+                <h4 class="alert-heading">Error al registrar el fisio</h4>
+                <p>Hubo un problema al intentar registrar al fisio. Por favor, inténtalo de nuevo.</p>
                 <a href="/registro" class="btn btn-warning w-100 mt-3">Volver a intentar</a>
             </div>
 
